@@ -1,0 +1,40 @@
+.AlbumsList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.AlbumsList__Heading {
+  text-align: center;
+}
+
+.AlbumsList__AlbumCard {
+  display: inline-block;
+  margin: 0.5em 1em;
+}
+
+.AlbumsList__LoadingSpinner {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  text-align: center;
+}
+.AlbumsList__LoadingSpinner:after {
+  content: ' ';
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #000;
+  border-color: #000 transparent #000 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
