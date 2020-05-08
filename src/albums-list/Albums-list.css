@@ -13,6 +13,11 @@
   margin: 0.5em 1em;
 }
 
+.AlbumsList__Chart {
+  display: flex;
+  justify-content: center;
+}
+
 .AlbumsList__LoadingSpinner {
   display: inline-block;
   width: 80px;

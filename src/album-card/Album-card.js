@@ -11,12 +11,10 @@ function AlbumCard(props) {
 
   return (
     <div className="AlbumCard">
-      {/* <pre>{JSON.stringify(props.albumDetails, null, 2)}</pre> */}
       <h2>{props.albumDetails.artist.name}</h2>
       <h3>
-        {props.albumDetails.name} - {props.albumDetails.userplaycount}
+        {props.albumDetails.name} - {props.albumDetails.date}
       </h3>
-      <h4>{props.albumDetails.albumMbid}</h4>
       <img
         src={getImageSource(props.albumDetails.image)}
         alt={props.albumDetails.name}
