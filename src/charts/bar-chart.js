@@ -1,7 +1,7 @@
-import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import React, { useEffect, useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 
-const data = [
+const fakeData = [
   {
     year: 'Page A',
     pv: 2400,
@@ -40,11 +40,17 @@ const data = [
 ];
 
 function AlbumsChart(props) {
+  const [chartData, setChartData] = useState();
+
+  useEffect(() => {
+    setChartData(props.chartData);
+  }, [props]);
+
   return (
     <BarChart
       width={500}
       height={300}
-      data={data}
+      data={chartData}
       margin={{
         top: 20,
         right: 30,
@@ -52,7 +58,6 @@ function AlbumsChart(props) {
         bottom: 5,
       }}
     >
-      <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="year" />
       <YAxis />
       <Tooltip />

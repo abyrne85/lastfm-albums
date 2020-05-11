@@ -1,20 +1,22 @@
 export class ChartService {
-  constructor() {}
-
   chartData = [];
-  calculateBarChartData(album) {
-    this.chartData.push({
-      year: album.date,
-      [album.name]: album.userplaycount,
-    });
-    const mergedData = [];
-    this.chartData.forEach((data) => {
-      if (!mergedData.year) {
-        mergedData.year = data.year;
-        mergedData;
-      }
-    });
 
-    console.log(this.chartData);
+  calculateBarChartData(album) {
+    const albumData = {
+      playcount: album.userplaycount,
+      album: album.name,
+      artist: album.artist,
+    };
+
+    const yearIndex = this.chartData.findIndex((x) => x.year === album.date);
+    if (yearIndex > -1) {
+      this.chartData[yearIndex].releases.push(albumData);
+    } else {
+      this.chartData.push({
+        year: album.date,
+        releases: [albumData],
+      });
+    }
+    return this.chartData;
   }
 }

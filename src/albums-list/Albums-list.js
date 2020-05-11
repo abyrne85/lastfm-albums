@@ -23,7 +23,7 @@ function AlbumsList() {
     async function getAlbums() {
       await axios
         .get(
-          `${LASTFM_USER_ALBUMS}&user=${userName}&api_key=${LAST_FM_API}&format=json`
+          `${LASTFM_USER_ALBUMS}&user=${userName}&api_key=${LAST_FM_API}&limit=10&format=json`
         )
         .then((response) => {
           getAlbumInfo(response.data.topalbums.album);
@@ -58,37 +58,38 @@ function AlbumsList() {
   }
 
   function parseYear(date) {
-    if (!date) return;
+    if (!date) return 'N/A';
     if (date.indexOf('-') === -1) return date;
     else return date.split('-')[0];
   }
-  async function getAlbumYears(album) {
-    const sortedAlbums = [];
-    if (!album.albumMbid) {
-      album.date = null;
-      setAlbums((albums) => [...albums, album]);
 
-      sortedAlbums.push(album);
-      return;
+  async function getAlbumYears(album) {
+    let albumReleaseYear;
+    if (album.albumMbid) {
+      albumReleaseYear = await axios
+        .get(`${MUSICBRAINZ_RELEASE}/${album.albumMbid}?fmt=json`)
+        .then((response) => {
+          return parseYear(response.data.date);
+        });
     }
-    await axios
-      .get(`${MUSICBRAINZ_RELEASE}/${album.albumMbid}?fmt=json`)
-      .then((response) => {
-        album.date = parseYear(response.data.date);
-        setAlbums((albums) => [..._.sortBy(albums, 'date'), album]);
-        getChartData(album);
-      });
+
+    album.date = albumReleaseYear ? albumReleaseYear : 'N/A';
+    setAlbums((albums) => [...albums, album]);
+    getChartData(album);
   }
 
   function getChartData(album) {
-    chartService.calculateBarChartData(album);
+    setChartData((chartData) => [
+      ...chartService.calculateBarChartData(album),
+      chartData,
+    ]);
   }
 
   return (
     <div>
       <h1 className="AlbumsList__Heading">All Albums</h1>
       <div className="AlbumsList__Chart">
-        <AlbumsChart data={chartData}></AlbumsChart>
+        <AlbumsChart chartData={chartData}></AlbumsChart>
       </div>
       <div className="AlbumsList">
         {albums.length > 0 &&
